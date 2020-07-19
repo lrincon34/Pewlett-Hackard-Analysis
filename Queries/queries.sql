@@ -194,3 +194,25 @@ INNER JOIN dept_emp AS de
 ON (ce.emp_no = de.emp_no)
 INNER JOIN departments AS d
 ON (de.dept_no = d.dept_no);
+
+-- Create a query that will return only the information relevant to the Sales team.
+SELECT (ri.emp_no),
+ri.first_name,
+ri.last_name,
+di.dept_name
+INTO sales_only
+FROM retirement_info as ri
+LEFT JOIN dept_info as di
+ON ri.emp_no = di.emp_no
+WHERE di.dept_name = ('Sales');
+
+-- Create a query that will return employee information relevant to the Sales & Development departments.
+SELECT (ri.emp_no),
+ri.first_name,
+ri.last_name,
+di.dept_name
+INTO sales_development
+FROM retirement_info as ri
+LEFT JOIN dept_info as di
+ON ri.emp_no = di.emp_no
+WHERE di.dept_name IN ('Sales', 'Development');
