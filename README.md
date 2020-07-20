@@ -80,3 +80,21 @@ Once the table was executed, we then had to remove duplicates. This was also a c
 	) tmp WHERE rn = 1
 	ORDER BY emp_no;
 
+As far as creating the table for **Mentorship Eligibility**, that was not as challenging as the first table. Using the following code, I was able to execute the results.
+	--Deliverable 2: Mentorship Eligibility
+	SELECT e.emp_no,
+	e.first_name,
+	e.last_name,
+	ti.title,
+	ti.from_date,
+	ti.to_date
+	INTO mentorship_eligibility
+	FROM employees as e
+	INNER JOIN titles as ti
+	ON (e.emp_no = ti.emp_no)
+	WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31');
+	SELECT DISTINCT ON (emp_no) * 
+	INTO mentorship_elig
+	FROM mentorship_eligibility;
+	
+
