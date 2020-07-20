@@ -25,21 +25,58 @@ The table for the mentorship program has the following information:
 ## Challenges
 
 As explained earlier, in order to begin the project, several factors had to be established first. In order to find the eligible employees for retirement, the following codes were used:
-  -- Create new table for retiring employees
-SELECT emp_no, first_name, last_name
-INTO retirement_info
-FROM employees
-WHERE (birth_date BETWEEN '1952-01-01' AND '1955-12-31')
-AND (hire_date BETWEEN '1985-01-01' AND '1988-12-31');
--- Check the table
-SELECT * FROM retirement_info;
+  	-- Create new table for retiring employees
+	SELECT emp_no, first_name, last_name
+	INTO retirement_inf
+	FROM employees
+	WHERE (birth_date BETWEEN '1952-01-01' AND '1955-12-31')
+	AND (hire_date BETWEEN '1985-01-01' AND '1988-12-31');
+	
+And the following code was used to determine current employment status:
+	SELECT d.dept_name,
+     	dm.emp_no,
+     	dm.from_date,
+     	dm.to_date
+	FROM departments as d
+	INNER JOIN dept_manager as dm
+	ON d.dept_no = dm.dept_no;
+	SELECT ri.emp_no,
+	ri.first_name,
+	ri.last_name,
+	de.to_date 
+	FROM retirement_info as ri
+	LEFT JOIN dept_emp as de
+	ON ri.emp_no = de.emp_no;
+	SELECT ri.emp_no,
+	ri.first_name,
+	ri.last_name,
+	de.to_date
+	INTO current_emp
+	FROM retirement_info as ri
+	LEFT JOIN dept_emp as de
+	ON ri.emp_no = de.emp_no
+	WHERE de.to_date = ('9999-01-01');
 
-CREATE TABLE dept_emp (
-	emp_no INT NOT NULL,
-	dept_no VARCHAR (4) NOT NULL,
-	from_date DATE NOT NULL,
-	to_date DATE NOT NULL,
-	FOREIGN KEY (emp_no) REFERENCES employees (emp_no),
-	FOREIGN KEY (dept_no) REFERENCES departments (dept_no),
-	PRIMARY KEY (emp_no, dept_no)
-);
+**One challenge I had was to group the table by job title.** I was not able to find the correct code for it, therefore it was not grouped by job title but the table did have all the other information. The error I kept getting for it was the following:
+	ERROR: column must appear in the GROUP BY clause or be used in an aggregate function LINE 2:
+
+Once the table was executed, we then had to remove duplicates. This was also a challenge but eventually the following code worked:
+	-- Partition the data to show only most recent title per employee
+	SELECT emp_no, 
+	first_name, 
+	last_name, 
+	title, 
+	from_date 
+	INTO recent_employees
+	FROM
+	(SELECT emp_no, 
+	first_name, 
+	last_name, 
+	title, 
+	from_date, ROW_NUMBER() OVER
+	(PARTITION BY (emp_no) 
+	ORDER BY from_date DESC) rn
+	FROM retiring_employees
+	) tmp WHERE rn = 1
+	ORDER BY emp_no;
+
