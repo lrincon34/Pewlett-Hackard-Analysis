@@ -216,3 +216,17 @@ FROM retirement_info as ri
 LEFT JOIN dept_info as di
 ON ri.emp_no = di.emp_no
 WHERE di.dept_name IN ('Sales', 'Development');
+
+-- Deliverable 1: Number of Retiring Employees by Title
+SELECT ce.emp_no, 
+	ce.first_name,
+	ce.last_name,
+	ti.title,
+	ti.from_date,
+	s.salary
+--INTO retiring_employees
+FROM current_emp AS ce
+    INNER JOIN titles AS ti
+        ON (ce.emp_no = ti.emp_no)
+    INNER JOIN salaries AS s
+        ON (ce.emp_no = s.emp_no);
