@@ -1,7 +1,6 @@
 # Pewlett-Hackard-Analysis
 
 ## **Introduction to the Analysis**
-
 For this project, Bobby had to organize and group large amounts of data in order to provide **Pewlett-Hackard** with information regarding the number of employees that will be eligible for retirement based on their age, hire date, and current working status. He then, had to create another table to determine how many participants will also be eligible for the mentorship program, which is based on their date of birth. 
 
 In order to create this table, the following information had to be determined first:
@@ -23,7 +22,6 @@ The table for the mentorship program has the following information:
   4. from_date and to_date
   
 ## Challenges
-
 As explained earlier, in order to begin the project, several factors had to be established first. In order to find the eligible employees for retirement, the following codes were used:
   	-- Create new table for retiring employees
 	SELECT emp_no, first_name, last_name
@@ -96,5 +94,7 @@ As far as creating the table for **Mentorship Eligibility**, that was not as cha
 	SELECT DISTINCT ON (emp_no) * 
 	INTO mentorship_elig
 	FROM mentorship_eligibility;
-	
+
+## Results
+The total number of employees eligible to retire consists of **54,722** of which only **33,118** are still current employees. The total number of employees eligible for the mentorship program include **1,940**. All of the results include very high numbers, specially the number of current employees, therefore in order to better summarize and 
 
