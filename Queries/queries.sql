@@ -230,3 +230,63 @@ FROM current_emp AS ce
         ON (ce.emp_no = ti.emp_no)
     INNER JOIN salaries AS s
         ON (ce.emp_no = s.emp_no);
+
+-- Deliverable 1: Number of Retiring Employees by Title
+SELECT ce.emp_no, 
+	ce.first_name,
+	ce.last_name,
+	ti.title,
+	ti.from_date,
+	s.salary
+INTO retiring_employees
+FROM current_emp AS ce
+    INNER JOIN titles AS ti
+        ON (ce.emp_no = ti.emp_no)
+    INNER JOIN salaries AS s
+        ON (ce.emp_no = s.emp_no);
+		
+SELECT
+	first_name,
+	last_name,
+	count(*)
+FROM retiring_employees
+GROUP BY
+	first_name,
+	last_name
+HAVING count(*) > 1;
+
+-- Partition the data to show only most recent title per employee
+SELECT emp_no, 
+first_name, 
+last_name, 
+title, 
+from_date 
+INTO recent_employees
+FROM
+(SELECT emp_no, 
+first_name, 
+last_name, 
+title, 
+from_date, ROW_NUMBER() OVER
+(PARTITION BY (emp_no) 
+ORDER BY from_date DESC) rn
+FROM retiring_employees
+) tmp WHERE rn = 1
+ORDER BY emp_no;
+
+--Deliverable 2: Mentorship Eligibility
+SELECT e.emp_no,
+e.first_name,
+e.last_name,
+ti.title,
+ti.from_date,
+ti.to_date
+INTO mentorship_eligibility
+FROM employees as e
+INNER JOIN titles as ti
+ON (e.emp_no = ti.emp_no)
+WHERE (e.birth_date BETWEEN '1965-01-01' AND '1965-12-31');
+
+SELECT DISTINCT ON (emp_no) * 
+INTO mentorship_elig
+FROM mentorship_eligibility;
