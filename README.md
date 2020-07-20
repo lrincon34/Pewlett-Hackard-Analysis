@@ -98,5 +98,6 @@ As far as creating the table for **Mentorship Eligibility**, that was not as cha
 ## Results
 The total number of employees eligible to retire consists of **54,722** of which only **33,118** are still current employees. The total number of employees eligible for the mentorship program include **1,940**. All of the results include very high numbers, specially the number of current employees, therefore in order to better analyze the data I would recommend filtering the data even further, possibly by departments, titles and maybe even gender. Further analysis could be done on what percent of people acutally do retire once they become eligible and those statistics can be applied to this data to shorten the results. 
 
+![](EmployeeDB.png)
 
 
